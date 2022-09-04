@@ -8,20 +8,23 @@
 #include <stdio.h>
 #include <string.h>
 using namespace std;
+/*
+server needs bind() its own port
+recvfrom() clientaddr; no need to know its IP or port,
+if recvfrom() succeeds, clientaddr and port is known
+*/
 int main(){
     int mSocket;
     if ((mSocket = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
 		std::cout << "Setup socket error." << std::endl;
     struct sockaddr_in Socketaddr;
-    // string CONF_VEHICLE_IP_ADDRESS = "127.0.0.1";
+    string CONF_VEHICLE_IP_ADDRESS = "192.168.1.126";
 	// bzero(&Socketaddr.sin_zero), sizeof(struct sockaddr_in));
 	Socketaddr.sin_family = AF_INET;
 	Socketaddr.sin_port = htons(10012);
-	Socketaddr.sin_addr.s_addr = htonl(INADDR_ANY);//inet_addr(CONF_VEHICLE_IP_ADDRESS.c_str()); 
-    if (bind(mSocket, (struct sockaddr *)&Socketaddr, sizeof(struct sockaddr)) == -1){
+	Socketaddr.sin_addr.s_addr = htonl(INADDR_ANY); // inet_addr(CONF_VEHICLE_IP_ADDRESS.c_str());
+    if (bind(mSocket, (struct sockaddr *)&Socketaddr, sizeof(struct sockaddr)) == -1)
 		std::cout << "bind mSocket failed!" << std::endl;
-		std::cout << "\n" << std::endl;
-	}
     char buf[1024] = {0};
     struct sockaddr_in clientaddr;
     socklen_t clientaddr_len = sizeof(clientaddr);
