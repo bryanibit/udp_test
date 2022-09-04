@@ -1,13 +1,13 @@
 # UDP example
 
 In UDP communication, there is accually no server or client.  
-A computer binds its own port and recvfrom, the others just sendto the computer IP and port without bind().
+A computer **binds** its own port and use recvfrom(), the others computer just sendto the computer **IP and port** without bind().
 
 ## server (recvfrom)
 
 1. initialize a socket
 2. bind its own port and IP(INADDR_ANY)
-3. recvfrom a client addr via its own port
+3. recvfrom via its own port(can get clientaddr)
 
 ## client (sendto)
 
