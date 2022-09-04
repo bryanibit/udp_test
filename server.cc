@@ -15,6 +15,7 @@ if recvfrom() succeeds, clientaddr and port is known
 */
 int main(){
     int mSocket;
+    bool flag = false;
     if ((mSocket = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
 		std::cout << "Setup socket error." << std::endl;
     struct sockaddr_in Socketaddr;
@@ -33,6 +34,11 @@ int main(){
         string str(buf);
         std::cout << "recv size: " << recvlen << ": " << str << std::endl;
         bzero(buf, sizeof(buf));
+        if(!flag){
+            std::cout << "\033[1;31mrecv data from " << inet_ntoa(clientaddr.sin_addr)
+            << ":" << ntohs(clientaddr.sin_port) << "\033[0m\n";
+            flag = true;
+        }
     }
     return 0;
 }

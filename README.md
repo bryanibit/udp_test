@@ -28,3 +28,5 @@ In a PC whose IP is another, run
 g++ client.cc  -o client -std=c++14 -pthread
 ./client
 ```
+
+You can use `lsof -i:port` in client PC to verify if the port output from server.cc is consistent.
