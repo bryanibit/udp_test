@@ -9,9 +9,13 @@
 #include <chrono>
 #include <string.h>
 using namespace std;
+/*
+ * client needs to initialize a socket but not need to name the socket(socket no need to bind()).
+ * client sendto() destination addr, which needs dest's IP and port(server's IP and port)
+*/
 int main(){
     int mSocket;
-    string CONF_VEHICLE_IP_ADDRESS = "127.0.0.1";
+    string CONF_VEHICLE_IP_ADDRESS = "192.168.1.126";
     if ((mSocket = socket(AF_INET, SOCK_DGRAM, 0)) == -1)
 		std::cout << "Setup socket error." << std::endl;
     // struct sockaddr_in Socketaddr;
@@ -25,14 +29,16 @@ int main(){
 	// }
     char buf[1024];
     struct sockaddr_in serveraddr;
+    socklen_t serveraddr_len = sizeof(serveraddr);
+    // bzero(&serveraddr, serveraddr_len);
     serveraddr.sin_family = AF_INET;
 	serveraddr.sin_port = htons(10012);
 	serveraddr.sin_addr.s_addr = inet_addr(CONF_VEHICLE_IP_ADDRESS.c_str());
-    socklen_t serveraddr_len = sizeof(serveraddr);
     for(int i = 0; i < 1000; i ++){
         sprintf(buf, "This is packet %d", i);
         int len = sendto(mSocket, buf, strlen(buf), 0, (struct sockaddr *)&serveraddr, serveraddr_len);
-        std::cout << "send size: " << len << std::endl;
+        string str(buf);
+        std::cout << "send: " << str << std::endl;
         using namespace std::chrono_literals;
         std::this_thread::sleep_for(100ms);
     }
